@@ -1,3 +1,399 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: #f8f9fb;
+  min-height: 100vh;
+  color: #fff;
+}
+.outline {
+  color: #fff;
+  -webkit-text-stroke: 3px #000;
+  paint-order: stroke fill;
+}
+/* auth */
+.auth {
+  display: flex;
+  min-height: 100vh;
+}
+.auth-left {
+  flex: 0 0 52%;
+  background: #85afe0;
+  border-radius: 0 40px 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+.auth-left form {
+  width: 100%;
+  max-width: 520px;
+}
+.auth-left label {
+  display: block;
+  font-size: 2rem;
+  margin: 0 0 4px 16px;
+}
+.auth-left input {
+  display: block;
+  width: 100%;
+  height: 64px;
+  border: 2px solid #000;
+  border-radius: 40px;
+  background: #fff;
+  margin-bottom: 28px;
+  padding: 0 24px;
+  font-size: 1.2rem;
+}
+.btn {
+  display: block;
+  margin: 30px auto 0;
+  min-width: 250px;
+  height: 64px;
+  border: 2px solid #000;
+  border-radius: 40px;
+  background: #bbd8ff;
+  font-size: 2rem;
+  cursor: pointer;
+  text-align: center;
+  line-height: 60px;
+  text-decoration: none;
+  font-family: inherit;
+}
+.auth-left p {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 40px;
+  line-height: 1.3;
+}
+.auth-left p a {
+  color: #fff;
+  text-decoration: none;
+}
+.auth-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+.auth-right img {
+  width: 180px;
+  margin-bottom: 40px;
+}
+.brand {
+  font-family: 'Stint Ultra Expanded', 'Rye', serif;
+  color: #3aaecb;
+  font-size: 3rem;
+  margin-bottom: 24px;
+  -webkit-text-stroke: 1px #0a5a73;
+}
+.slogan {
+  font-family: 'Stint Ultra Expanded', 'Rye', serif;
+  color: #7fcbe0;
+  font-size: 2.6rem;
+  line-height: 1.5;
+  -webkit-text-stroke: 1px #0a5a73;
+  max-width: 480px;
+}
+/* dashboard */
+.wrap {
+  max-width: 1080px;
+  margin: 40px auto;
+  background: #85afe0;
+  border-radius: 40px;
+  padding: 30px 40px 40px;
+  position: relative;
+}
+.nav {
+  display: flex;
+  gap: 32px;
+  font-size: 1.2rem;
+}
+.nav a {
+  color: #fff;
+  text-decoration: none;
+}
+.logo {
+  position: absolute;
+  top: 28px;
+  right: 34px;
+  width: 150px;
+  height: 150px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 4px;
+}
+.logo img {
+  width: 100%;
+  display: block;
+}
+.welcome {
+  font-size: 2.6rem;
+  margin-top: 50px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #000;
+  width: max-content;
+  min-width: 60%;
+}
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 2.2rem;
+  margin: 36px 0 6px;
+}
+.title .btn-sm {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  border: 1px solid #000;
+  border-radius: 30px;
+  background: #fff;
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: #fff;
+}
+.panel {
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 24px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #000;
+}
+.panel-body {
+  flex: 1;
+  padding: 20px 30px;
+}
+.pager {
+  border-top: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 12px;
+  font-size: 1rem;
+}
+.pager a {
+  color: #fff;
+  text-decoration: none;
+}
+.pager a,
+.th span,
+.row span {
+  -webkit-text-stroke: 0.8px #000;
+  paint-order: stroke fill;
+  color: #fff;
+  font-weight: bold;
+}
+/* tables */
+.th,
+.row {
+  display: grid;
+  grid-template-columns: var(--cols);
+  text-align: center;
+  align-items: center;
+}
+.th {
+  margin: 6px 0 2px;
+  padding: 0 18px;
+  font-size: 1.05rem;
+}
+.row {
+  border: 1px solid #000;
+  border-radius: 30px;
+  padding: 10px 18px;
+  font-size: 1.05rem;
+}
+.line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.line .row {
+  flex: 1;
+}
+.line .act {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.line .row + .act {
+  min-width: 130px;
+  justify-content: center;
+}
+.orders {
+  --cols: 1.2fr 1.2fr 1fr 1.6fr 1fr;
+}
+.courier {
+  --cols: 1.2fr 1.2fr 1.6fr 1fr;
+}
+.admin {
+  --cols: 0.4fr 1.3fr 1.3fr 1fr 1.6fr 1fr 1fr;
+}
+.admin .row {
+  padding-right: 10px;
+}
+.icons {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  font-size: 1.3rem;
+  color: #000;
+  text-decoration: none;
+}
+.icons a {
+  color: #000;
+  text-decoration: none;
+}
+.pill {
+  display: inline-block;
+  padding: 8px 22px;
+  border: 0;
+  border-radius: 30px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+  color: #fff;
+  -webkit-text-stroke: 1px #000;
+  paint-order: stroke fill;
+}
+.cancel,
+.reject,
+.danger {
+  background: #a91010;
+}
+.accept {
+  background: #bbd8ff;
+}
+.primary {
+  background: #6fa5df;
+}
+/* forms in panel */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 60px;
+  padding: 10px 30px 20px;
+}
+.form.one {
+  grid-template-columns: 3fr 1.5fr;
+}
+.field label,
+.modal label {
+  display: block;
+  font-size: 2rem;
+  margin: 6px 0 0 16px;
+  color: #fff;
+  -webkit-text-stroke: 1px #000;
+  paint-order: stroke fill;
+}
+.field input,
+.modal input {
+  display: block;
+  width: 100%;
+  height: 46px;
+  border: 2px solid #000;
+  border-radius: 30px;
+  padding: 0 20px;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  background: #fff;
+}
+.form .end {
+  align-self: end;
+  justify-self: end;
+}
+.form .end .pill {
+  border: 2px solid #000;
+}
+/* modals (CSS-only via :target) */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  place-items: center;
+  z-index: 10;
+}
+.modal:target {
+  display: grid;
+}
+.modal .box {
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 24px;
+  width: min(700px, 92vw);
+  padding: 24px 20px;
+}
+.modal h2 {
+  text-align: center;
+  font-weight: 400;
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+  color: #fff;
+  -webkit-text-stroke: 1px #000;
+  paint-order: stroke fill;
+}
+.modal .btns {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 24px;
+}
+.modal .pill {
+  border: 2px solid #000;
+  min-width: 230px;
+  text-align: center;
+}
+.modal .center {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.modal .center .pill {
+  min-width: 200px;
+}
+input {
+  color: black;
+  background-color: white;
+  caret-color: black;
+}
+
+/* When focused (typing inside), text turns yellow */
+input:focus {
+  background-color: #fff59d; /* soft light yellow */
+  outline: none;
+}
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none; /* prevents hover/click effects */
+}
+.text-danger {
+  color: red;
+}

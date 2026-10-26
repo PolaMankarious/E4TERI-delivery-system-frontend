@@ -1,0 +1,41 @@
+<body>
+  <div class="wrap">
+    <app-nav-bar></app-nav-bar>
+    <div class="title">Assigned Orders</div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="th courier" style="margin-right: 290px">
+          <span>Pick up</span><span>Drop Off</span><span>Delivery Time</span><span>Status</span>
+        </div>
+        <div class="line">
+          <div class="row courier" style="--cols: 1.2fr 1.2fr 1.6fr 1fr">
+            <span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>15th Dec 12:02 PM</span
+            ><span>Picked Up</span>
+          </div>
+          <div class="act" style="min-width: 272px">
+            <a class="pill primary" href="#update">Update Order Status</a>
+          </div>
+        </div>
+        <div class="line">
+          <div class="row courier">
+            <span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>15th Dec 12:02 PM</span
+            ><span>N/A</span>
+          </div>
+          <div class="act" style="min-width: 272px">
+            <a class="pill accept" href="#">Accept</a><a class="pill reject" href="#">Reject</a>
+          </div>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="#">Prev</a><span class="outline">1</span><a href="#">Next</a>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="update">
+    <div class="box">
+      <h2>Update Order Status</h2>
+      <label>Status</label><input type="text" />
+      <div class="center"><a class="pill primary" href="#">Update</a></div>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,68 @@
+<body>
+  <div class="wrap">
+    <app-nav-bar></app-nav-bar>
+    <div class="title">Orders</div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="th admin" style="padding-right: 14px">
+          <span>Id</span>
+          <span>Pick up</span>
+          <span>Drop Off</span>
+          <span>Courier</span>
+          <span>Delivery Time</span>
+          <span>Status</span>
+          <span></span>
+        </div>
+        <div class="line">
+          <div class="row admin" style="padding-right: 14px">
+            <span>1</span><span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>Khaled</span
+            ><span>15th Dec 12:02 PM</span><span>Delivered</span
+            ><span class="icons"
+              ><a href="#assign" title="Assign courier">&#8635;</a
+              ><a href="#edit" title="Edit">&#9998;</a
+              ><a href="#delete" title="Delete">&#128465;</a></span
+            >
+          </div>
+        </div>
+        <div class="line">
+          <div class="row admin" style="padding-right: 14px">
+            <span>2</span><span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>N/A</span
+            ><span>24th Dec 12:34 PM</span><span>Pending</span
+            ><span class="icons"
+              ><a href="#assign" title="Assign courier">&#8635;</a
+              ><a href="#edit" title="Edit">&#9998;</a
+              ><a href="#delete" title="Delete">&#128465;</a></span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="#">Prev</a><span class="outline">1</span><a href="#">Next</a>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="delete">
+    <div class="box">
+      <h2 style="font-size: 3.4rem; margin: 20px 0">Delete Order</h2>
+      <div class="btns">
+        <a class="pill danger" href="#">Delete</a><a class="pill primary" href="#">Back</a>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="edit">
+    <div class="box">
+      <h2>Edit Order</h2>
+      <label>Pick Off Location</label><input type="text" /><label>Drop Off Location</label
+      ><input type="text" /><label>Delivery Time</label><input type="text" /><label>Status</label
+      ><input type="text" />
+      <div class="center"><a class="pill primary" href="#">Edit</a></div>
+    </div>
+  </div>
+  <div class="modal" id="assign">
+    <div class="box">
+      <h2>Assign Courier</h2>
+      <label>Courier</label><input type="text" />
+      <div class="center"><a class="pill primary" href="#">Assign</a></div>
+    </div>
+  </div>
+</body>

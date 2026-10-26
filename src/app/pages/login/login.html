@@ -1,0 +1,35 @@
+<body>
+  <div class="auth">
+    <div class="auth-left">
+      <form>
+        <label>Email</label><input type="email" [(ngModel)]="loginObj.email" name="email" /><label
+          >Password</label
+        ><input
+          type="password"
+          [(ngModel)]="loginObj.password"
+          #password="ngModel"
+          required
+          minlength="6"
+          name="password"
+        />
+        <div class="text-danger">
+          @if (password.errors?.['required'] && password.touched) {
+            <span>Password is required</span>
+          }
+          @if (password.errors?.['minlength']) {
+            <span>Min 5 characters required</span>
+          }
+        </div>
+        <button type="button" (click)="onLogin()" class="btn">Login</button>
+      </form>
+      <p>
+        Not Registered?<br /><a class="click-here" routerLink="/register">Click here to Sign Up</a>
+      </p>
+    </div>
+    <div class="auth-right">
+      <img src="logo.svg" alt="E4TERI logo" />
+      <div class="brand">E4TERI</div>
+      <div class="slogan">Fastest Order Delivery<br />In the<br />Middle East</div>
+    </div>
+  </div>
+</body>
