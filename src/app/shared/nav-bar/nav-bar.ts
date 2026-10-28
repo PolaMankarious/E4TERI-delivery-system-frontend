@@ -10,5 +10,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './nav-bar.html',
 })
 export class NavBar {
+  Role = Role;
   constructor(public userService: UserService) {}
 }

@@ -1,21 +1,26 @@
-<!-- <div>
-  @if (userService.loggedUser.role === Role.user) {
-    <nav class="nav">
-      <a class="" routerLink="/home">Home</a><a class="" routerLink="/my-orders">Orders</a>
-    </nav>
-  }
-  @if (userService.loggedUser.role === Role.user) {
-    <nav class="nav">
-      <a class="" routerLink="/home">Home</a><a class="" routerLink="/my-orders">Orders</a>
-    </nav>
-  }
-  @if (userService.loggedUser.role === Role.user) {
-    <nav class="nav">
-      <a class="" routerLink="/home">Home</a><a class="" routerLink="/my-orders">Orders</a>
-    </nav>
-  }
-  <div class="logo"><img src="logo.svg" alt="E4TERI logo" /></div>
-  @if (userService.loggedUser.name) {
-    <h1 class="welcome">Welcome back {{ userService.loggedUser.name }}</h1>
-  }
-</div> -->
+<div>
+  <nav>
+    @if (userService.loggedUser.role === Role.Admin) {
+      <nav class="nav">
+        <a class="" routerLink="/home">Home</a><a routerLink="/admin-orders">Manage Orders</a>
+      </nav>
+    }
+    @if (userService.loggedUser.role === Role.Courier) {
+      <nav class="nav">
+        <a class="" routerLink="/home">Home</a
+        ><a class="" routerLink="/courier-orders">Assigned Orders</a>
+      </nav>
+    }
+    @if (userService.loggedUser.role === Role.Business) {
+      <nav class="nav">
+        <a class="" routerLink="/home">Home</a><a class="" routerLink="/my-orders">Orders</a>
+      </nav>
+    }
+    <h1 class="welcome">
+      Welcome Back {{ userService.loggedUser.role }}, {{ userService.loggedUser.name }}
+    </h1>
+  </nav>
+  <div class="logo">
+    <img src="logo.svg" alt="E4TERI logo" />
+  </div>
+</div>

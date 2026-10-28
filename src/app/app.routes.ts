@@ -12,4 +12,6 @@ export const routes: Routes = [
   { path: 'admin-orders', component: AdminOrders },
   { path: 'courier-orders', component: CourierOrders },
   { path: 'add-order', component: AddOrder },
+
+  { path: '**', redirectTo: 'login' },
 ];

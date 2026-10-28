@@ -20,7 +20,7 @@ export class Register {
     email: '',
     password: '',
     phone: '',
-    role: Role.Business,
+    role: Role.Courier,
   };
   confirmPassword = '';
 

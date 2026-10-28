@@ -25,13 +25,13 @@ export class Login {
     role: Role.Admin,
   };
 
-  businessUser: iUser = {
+  CourierUser: iUser = {
     user_id: 2,
     name: 'Bob Smith',
     email: 'bob@example.com',
     password: 'pass456',
     phone: '01000000002',
-    role: Role.Business,
+    role: Role.Courier,
   };
 
   guestUser: iUser = {
@@ -40,12 +40,12 @@ export class Login {
     email: 'carol@example.com',
     password: 'pass789',
     phone: '01000000003',
-    role: Role.Guest,
+    role: Role.Business,
   };
 
   constructor(private userService: UserService) {}
   onLogin() {
     const formValue = this.loginObj;
-    this.userService.saveUserInfo(this.guestUser);
+    this.userService.saveUserInfo(this.adminUser);
   }
 }
