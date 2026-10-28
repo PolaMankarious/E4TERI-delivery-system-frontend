@@ -4,7 +4,7 @@ import { NavBar } from '../../../shared/nav-bar/nav-bar';
 @Component({
   imports: [NavBar],
   selector: 'app-my-orders',
-  styleUrl: './my-orders.css',
-  templateUrl: './my-orders.html',
+  styleUrl: './add-order.css',
+  templateUrl: './add-order.html',
 })
-export class MyOrders {}
+export class AddOrder {}
