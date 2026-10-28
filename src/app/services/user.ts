@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { iUser } from '../models/iUser'; // Make sure Role is imported
 import { Role } from '../models/role';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,7 +13,9 @@ export class UserService {
     role: null,
   };
 
-  constructor() {
+  base_url = 'http://localhost:4000';
+
+  constructor(private http: HttpClient) {
     const raw = localStorage.getItem('loggedUser');
     if (!raw) return;
 
@@ -20,6 +24,14 @@ export class UserService {
     } catch {
       localStorage.removeItem('loggedUser');
     }
+  }
+
+  registerUser(user: iUser): Observable<any> {
+    return this.http.post(`${this.base_url}/api/user/auth/register`, user);
+  }
+
+  loginUser(loginData: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.base_url}/api/user/auth/login`, loginData);
   }
 
   saveUserInfo(user: any) {

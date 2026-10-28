@@ -40,7 +40,12 @@
           }
 
           <label>Phone Number</label
-          ><input type="text" [(ngModel)]="user.phone" name="phone" placeholder="+2XXXXXXXXXXX" />
+          ><input
+            type="text"
+            [(ngModel)]="user.phone_number"
+            name="phone"
+            placeholder="+2XXXXXXXXXXX"
+          />
           <button class="btn" type="button" (click)="goToStep2()">Next</button>
         }
 

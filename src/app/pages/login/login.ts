@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { iUser } from '../../models/iUser';
 import { Role } from '../../models/role';
 import { UserService } from '../../services/user';
+import { email } from '@angular/forms/signals';
 @Component({
   imports: [RouterModule, FormsModule],
   selector: 'app-login',
@@ -11,41 +12,61 @@ import { UserService } from '../../services/user';
   templateUrl: './login.html',
 })
 export class Login {
+  loading = false;
+  errorMessage = '';
+
   loginObj: any = {
     email: '',
     password: '',
   };
 
   adminUser: iUser = {
-    user_id: 1,
     name: 'Alice Johnson',
     email: 'alice@example.com',
     password: 'pass123',
-    phone: '01000000001',
+    phone_number: '01000000001',
     role: Role.Admin,
   };
 
   CourierUser: iUser = {
-    user_id: 2,
     name: 'Bob Smith',
     email: 'bob@example.com',
     password: 'pass456',
-    phone: '01000000002',
+    phone_number: '01000000002',
     role: Role.Courier,
   };
 
   guestUser: iUser = {
-    user_id: 3,
     name: 'Carol Davis',
     email: 'carol@example.com',
     password: 'pass789',
-    phone: '01000000003',
+    phone_number: '01000000003',
     role: Role.Business,
   };
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+  ) {}
   onLogin() {
+    if (this.loading) return;
+
+    this.loading = true;
     const formValue = this.loginObj;
-    this.userService.saveUserInfo(this.adminUser);
+    this.userService
+      .loginUser({ email: this.loginObj.email, password: this.loginObj.password })
+      .subscribe({
+        next: (res) => {
+          this.userService.saveUserInfo(res);
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorMessage = err.error?.data?.message ?? err.error?.message ?? 'Login failed.';
+        },
+        complete: () => {
+          this.loading = false;
+        },
+      });
   }
 }
