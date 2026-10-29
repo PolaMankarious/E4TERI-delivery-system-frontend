@@ -12,9 +12,9 @@
         <span>Status</span>
         <span></span>
       </div>
-
-      <div class="line">
-        @for (order of adminOrders; track order.id) {
+      <pre>count: {{ adminOrders().length }}</pre>
+      @for (order of adminOrders(); track order.id) {
+        <div class="line">
           <div class="row admin cards-container" style="padding-right: 14px">
             <span>{{ order.id }}</span>
             <span>{{ order.pickup_address }}</span>
@@ -28,8 +28,10 @@
               <a href="#delete" title="Delete">&#128465;</a>
             </span>
           </div>
-        }
-      </div>
+        </div>
+      } @empty {
+        <div class="line"><span>No orders found.</span></div>
+      }
     </div>
   </div>
 </div>
