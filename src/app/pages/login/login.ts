@@ -57,10 +57,11 @@ export class Login {
       .loginUser({ email: this.loginObj.email, password: this.loginObj.password })
       .subscribe({
         next: (res) => {
-          this.userService.saveUserInfo(res);
-          this.router.navigate(['/']);
+          this.userService.saveUserInfo(res.data);
+          this.router.navigate(['/welcome']);
         },
         error: (err) => {
+          console.log('ERROR fired', err.status, err.error);
           this.loading = false;
           this.errorMessage = err.error?.data?.message ?? err.error?.message ?? 'Login failed.';
         },

@@ -1,8 +1,11 @@
 export interface iOrder {
-  order_id: number;
-  pickup_location: string;
-  dropoff_location: string;
+  id: number;
+  pickup_address: string;
+  dropoff_address: string;
   business_id: number;
-  status: string;
+  order_status: string;
   delivery_time: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  assignments: [];
 }

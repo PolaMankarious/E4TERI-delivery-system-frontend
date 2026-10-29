@@ -12,30 +12,25 @@
         <span>Status</span>
         <span></span>
       </div>
+
       <div class="line">
-        <div class="row admin" style="padding-right: 14px">
-          <span>1</span><span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>Khaled</span
-          ><span>15th Dec 12:02 PM</span><span>Delivered</span
-          ><span class="icons"
-            ><a href="#assign" title="Assign courier">&#8635;</a
-            ><a href="#edit" title="Edit">&#9998;</a
-            ><a href="#delete" title="Delete">&#128465;</a></span
-          >
-        </div>
-      </div>
-      <div class="line">
-        <div class="row admin" style="padding-right: 14px">
-          <span>2</span><span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>N/A</span
-          ><span>24th Dec 12:34 PM</span><span>Pending</span
-          ><span class="icons"
-            ><a href="#assign" title="Assign courier">&#8635;</a
-            ><a href="#edit" title="Edit">&#9998;</a
-            ><a href="#delete" title="Delete">&#128465;</a></span
-          >
-        </div>
+        @for (order of adminOrders; track order.id) {
+          <div class="row admin cards-container" style="padding-right: 14px">
+            <span>{{ order.id }}</span>
+            <span>{{ order.pickup_address }}</span>
+            <span>{{ order.dropoff_address }}</span>
+            <span>Khaled</span>
+            <span>{{ order.delivery_time }}</span>
+            <span>{{ order.order_status }}</span>
+            <span class="icons">
+              <a href="#assign" title="Assign courier">&#8635;</a>
+              <a href="#edit" title="Edit">&#9998;</a>
+              <a href="#delete" title="Delete">&#128465;</a>
+            </span>
+          </div>
+        }
       </div>
     </div>
-    <div class="pager"><a href="#">Prev</a><span class="outline">1</span><a href="#">Next</a></div>
   </div>
 </div>
 <div class="modal" id="delete">

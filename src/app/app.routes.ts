@@ -5,6 +5,7 @@ import { OrderDetails } from './pages/Guest/order-details/order-details';
 import { AdminOrders } from './pages/Admin/admin-orders/admin-orders';
 import { CourierOrders } from './pages/Courier/courier-orders/courier-orders';
 import { AddOrder } from './pages/Guest/add-order/add-order';
+import { Welcome } from './pages/welcome/welcome';
 export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
@@ -12,6 +13,5 @@ export const routes: Routes = [
   { path: 'admin-orders', component: AdminOrders },
   { path: 'courier-orders', component: CourierOrders },
   { path: 'add-order', component: AddOrder },
-
-  { path: '**', redirectTo: 'login' },
+  { path: 'welcome', component: Welcome },
 ];
