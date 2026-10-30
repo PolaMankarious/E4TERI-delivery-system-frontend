@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, signal } from '@angular/core';
 import { iUser } from '../models/iUser'; // Make sure Role is imported
 import { Role } from '../models/role';
 import { HttpClient } from '@angular/common/http';
@@ -7,20 +7,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  loggedUser: { name: string; email: string; role: Role | null } = {
+  base_url = 'http://localhost:4000';
+
+  private currentUserSignal = signal<{ name: string; email: string; role: Role | null }>({
     name: '',
     email: '',
     role: null,
-  };
+  });
 
-  base_url = 'http://localhost:4000';
+  // Only source of truth
+  readonly currentUser = this.currentUserSignal.asReadonly();
 
   constructor(private http: HttpClient) {
     const raw = localStorage.getItem('loggedUser');
     if (!raw) return;
 
     try {
-      this.loggedUser = JSON.parse(raw);
+      this.currentUserSignal.set(JSON.parse(raw));
     } catch {
       localStorage.removeItem('loggedUser');
     }
@@ -34,14 +37,24 @@ export class UserService {
     return this.http.post(`${this.base_url}/api/user/auth/login`, loginData);
   }
 
+  fetchUserData() {
+    return this.http.get(`${this.base_url}/api/user/me`);
+  }
+
   saveUserInfo(user: any) {
-    this.loggedUser.name = user.name;
-    this.loggedUser.email = user.email;
-    this.loggedUser.role = user.role;
-    localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+    const userInfo = {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+
+    localStorage.setItem('loggedUser', JSON.stringify(userInfo));
+    this.currentUserSignal.set(userInfo);
   }
 
   deleteUserInfo() {
+    localStorage.removeItem('token');
     localStorage.removeItem('loggedUser');
+    this.currentUserSignal.set({ name: '', email: '', role: null });
   }
 }

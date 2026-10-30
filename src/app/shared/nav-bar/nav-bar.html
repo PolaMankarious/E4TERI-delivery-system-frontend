@@ -1,23 +1,23 @@
 <div>
   <nav>
-    @if (userService.loggedUser.role === Role.Admin) {
+    @if (userService.currentUser().role === 'admin') {
       <nav class="nav">
         <a class="" routerLink="/home">Home</a><a routerLink="/admin-orders">Manage Orders</a>
       </nav>
     }
-    @if (userService.loggedUser.role === Role.Courier) {
+    @if (userService.currentUser().role === 'courier') {
       <nav class="nav">
         <a class="" routerLink="/home">Home</a
         ><a class="" routerLink="/courier-orders">Assigned Orders</a>
       </nav>
     }
-    @if (userService.loggedUser.role === Role.Business) {
+    @if (userService.currentUser().role === 'business') {
       <nav class="nav">
         <a class="" routerLink="/home">Home</a><a class="" routerLink="/my-orders">Orders</a>
       </nav>
     }
     <h1 class="welcome">
-      Welcome Back {{ userService.loggedUser.role }}, {{ userService.loggedUser.name }}
+      Welcome Back {{ userService.currentUser().role }}, {{ userService.currentUser().name }}
     </h1>
   </nav>
   <div class="logo">

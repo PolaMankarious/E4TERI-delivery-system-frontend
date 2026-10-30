@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user';
-import { Role } from '../../models/role';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,6 +9,5 @@ import { RouterLink } from '@angular/router';
   templateUrl: './nav-bar.html',
 })
 export class NavBar {
-  Role = Role;
   constructor(public userService: UserService) {}
 }

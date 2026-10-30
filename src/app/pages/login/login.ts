@@ -57,8 +57,21 @@ export class Login {
       .loginUser({ email: this.loginObj.email, password: this.loginObj.password })
       .subscribe({
         next: (res) => {
-          this.userService.saveUserInfo(res.data);
-          this.router.navigate(['/welcome']);
+          localStorage.setItem('token', res.data.token);
+
+          // fetch user data
+          this.userService.fetchUserData().subscribe({
+            next: (userRes: any) => {
+              const userData = userRes.data;
+              this.userService.saveUserInfo(userData);
+              this.router.navigate(['/welcome']);
+              this.loading = false;
+            },
+            error: (err) => {
+              this.loading = false;
+              this.errorMessage = 'Failed to load user data';
+            },
+          });
         },
         error: (err) => {
           console.log('ERROR fired', err.status, err.error);
