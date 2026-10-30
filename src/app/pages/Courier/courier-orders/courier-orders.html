@@ -7,15 +7,19 @@
         <div class="th courier" style="margin-right: 290px">
           <span>Pick up</span><span>Drop Off</span><span>Delivery Time</span><span>Status</span>
         </div>
-        <div class="line">
-          <div class="row courier" style="--cols: 1.2fr 1.2fr 1.6fr 1fr">
-            <span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>15th Dec 12:02 PM</span
-            ><span>Picked Up</span>
+        @for (order of assignedOrders(); track order.id) {
+          <div class="line">
+            <div class="row courier" style="--cols: 1.2fr 1.2fr 1.6fr 1fr">
+              <span>Sheikh Zayed 1</span>
+              <span>Sheikh Zayed 7</span>
+              <span>15th Dec 12:02 PM</span>
+              <span>Picked Up</span>
+            </div>
+            <div class="act" style="min-width: 272px">
+              <a class="pill primary" href="#update">Update Order Status</a>
+            </div>
           </div>
-          <div class="act" style="min-width: 272px">
-            <a class="pill primary" href="#update">Update Order Status</a>
-          </div>
-        </div>
+        }
         <div class="line">
           <div class="row courier">
             <span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>15th Dec 12:02 PM</span
