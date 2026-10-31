@@ -2,18 +2,18 @@
   <nav>
     @if (userService.currentUser().role === 'admin') {
       <nav class="nav">
-        <a class="" routerLink="/home">Home</a><a routerLink="/admin-orders">Manage Orders</a>
+        <a class="" routerLink="/welcome">Home</a><a routerLink="/admin-orders">Manage Orders</a>
       </nav>
     }
     @if (userService.currentUser().role === 'courier') {
       <nav class="nav">
-        <a class="" routerLink="/home">Home</a
+        <a class="" routerLink="/welcome">Home</a
         ><a class="" routerLink="/courier-orders">Assigned Orders</a>
       </nav>
     }
     @if (userService.currentUser().role === 'business') {
       <nav class="nav">
-        <a class="" routerLink="/home">Home</a><a class="" routerLink="/my-orders">Orders</a>
+        <a class="" routerLink="/welcome">Home</a><a class="" routerLink="/my-orders">Orders</a>
       </nav>
     }
     <h1 class="welcome">
