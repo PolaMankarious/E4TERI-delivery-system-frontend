@@ -22,9 +22,11 @@
             <span>{{ order.delivery_time }}</span>
             <span>{{ order.order_status }}</span>
             <span class="icons">
-              <a href="#assign" title="Assign courier">&#8635;</a>
-              <a href="#edit" title="Edit">&#9998;</a>
-              <a href="#delete" title="Delete">&#128465;</a>
+              <button href="#assign" title="Assign courier">&#8635;</button>
+              <button href="#edit" title="Edit">&#9998;</button>
+              <button (click)="OnDeleteOrder(order.id)" href="#delete" title="Delete">
+                &#128465;
+              </button>
             </span>
           </div>
         </div>

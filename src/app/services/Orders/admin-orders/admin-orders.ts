@@ -12,4 +12,8 @@ export class AdminOrdersService {
   getAllOrders(): Observable<any> {
     return this.http.get(`${this.base_url}/api/admin`);
   }
+
+  deleteOrder(id: number) {
+    return this.http.delete(`${this.base_url}/api/admin/${id}`);
+  }
 }

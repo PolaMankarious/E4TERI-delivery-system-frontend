@@ -27,4 +27,22 @@ export class AdminOrders implements OnInit {
       },
     );
   }
+
+  OnDeleteOrder(id: number) {
+    const confirmed = window.confirm('Are you sure you want to delete this order?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.adminOrdersService.deleteOrder(id).subscribe({
+      next: (res) => {
+        console.log('order deleted successfully', res);
+        this.loadAllOrders();
+      },
+      error: (err) => {
+        console.log('Failed to delete order', err.error);
+      },
+    });
+  }
 }
