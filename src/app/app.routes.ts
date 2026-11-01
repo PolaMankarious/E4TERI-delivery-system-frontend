@@ -5,16 +5,28 @@ import { OrderDetails } from './pages/Guest/order-details/order-details';
 import { AdminOrders } from './pages/Admin/admin-orders/admin-orders';
 import { CourierOrders } from './pages/Courier/courier-orders/courier-orders';
 import { AddOrder } from './pages/Guest/add-order/add-order';
-import { Welcome } from './pages/welcome/welcome';
 import { MyOrders } from './pages/Guest/my-orders/my-orders';
+import { Welcome } from './pages/welcome/welcome';
+import { authGuard } from './services/guards/auth-guard';
+import { roleGuard } from './services/guards/role-guard';
+import { Role } from './models/role';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'my-orders', component: MyOrders },
-  { path: 'order-details/:id', component: OrderDetails },
-  { path: 'admin-orders', component: AdminOrders },
-  { path: 'courier-orders', component: CourierOrders },
-  { path: 'add-order', component: AddOrder },
-  { path: 'welcome', component: Welcome },
+  { path: 'welcome', component: Welcome, canActivate: [authGuard] },
+
+  // business
+  { path: 'my-orders', component: MyOrders, canActivate: [authGuard, roleGuard], data: { roles: [Role.Business] } },
+  { path: 'add-order', component: AddOrder, canActivate: [authGuard, roleGuard], data: { roles: [Role.Business] } },
+  { path: 'order-details/:id', component: OrderDetails, canActivate: [authGuard, roleGuard], data: { roles: [Role.Business] } },
+
+  // courier
+  { path: 'courier-orders', component: CourierOrders, canActivate: [authGuard, roleGuard], data: { roles: [Role.Courier] } },
+
+  // admin
+  { path: 'admin-orders', component: AdminOrders, canActivate: [authGuard, roleGuard], data: { roles: [Role.Admin] } },
+
+  { path: '**', redirectTo: 'login' },
 ];
