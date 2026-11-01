@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user';
-import { RouterLink } from '@angular/router';
+import { Role } from '../../models/role';
 
 @Component({
   imports: [RouterLink],
@@ -9,5 +10,13 @@ import { RouterLink } from '@angular/router';
   templateUrl: './nav-bar.html',
 })
 export class NavBar {
-  constructor(public userService: UserService) {}
+  userService = inject(UserService);
+  private router = inject(Router);
+
+  protected readonly Role = Role;
+
+  logout() {
+    this.userService.deleteUserInfo();
+    this.router.navigate(['/login']);
+  }
 }
