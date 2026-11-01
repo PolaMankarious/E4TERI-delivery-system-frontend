@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { iUser } from '../../models/iUser';
+import { iUser } from '../../models/user';
 import { Role } from '../../models/role';
 import { UserService } from '../../services/user';
 import { email } from '@angular/forms/signals';
@@ -47,7 +47,7 @@ export class Login {
   constructor(
     private userService: UserService,
     private router: Router,
-  ) {}
+  ) { }
   onLogin() {
     if (this.loading) return;
 

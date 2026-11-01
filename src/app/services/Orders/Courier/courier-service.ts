@@ -1,7 +1,7 @@
 import { inject, Service, signal } from '@angular/core';
-import { iOrder } from '../../../models/iOrder';
+import { iOrder } from '../../../models/order';
 import { Observable } from 'rxjs';
-import { iAssignedOrder } from '../../../models/iAssignedOrder';
+import { iAssignedOrder } from '../../../models/assigned-order';
 import { HttpClient } from '@angular/common/http';
 
 @Service()

@@ -1,1 +1,41 @@
-<p>my-orders works!</p>
+<div class="wrap">
+    <app-nav-bar></app-nav-bar>
+    <div class="title">My Orders</div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <div class="th courier" style="margin-right: 290px">
+                <span>Pick up</span><span>Drop Off</span><span>Delivery Time</span><span>Status</span>
+            </div>
+
+            @for (order of orders(); track order.id) {
+            <div class="line">
+                <div class="row courier" style="--cols: 1.2fr 1.2fr 1.6fr 1fr">
+                    <span>{{ order.pickup_address }}</span>
+                    <span>{{ order.dropoff_address }}</span>
+                    <span>{{ order.delivery_time | date: 'd MMM, h:mm a' }}</span>
+                    <span>{{ statusLabels[order.order_status] }}</span>
+                </div>
+                <div class="act" style="min-width: 272px">
+                    <a class="pill primary" [routerLink]="['/order-details', order.id]">View</a>
+
+                    <!-- only pending orders can be cancelled -->
+                    @if (order.order_status === 'pending') {
+                    <a class="pill reject" style="cursor: pointer" (click)="cancelOrder(order)">Cancel</a>
+                    }
+                </div>
+            </div>
+            } @empty {
+            <div class="line">
+                <div class="row courier">
+                    <span>You have no orders yet.</span>
+                </div>
+            </div>
+            }
+        </div>
+
+        <div class="pager">
+            <a routerLink="/add-order">New Order</a>
+        </div>
+    </div>
+</div>

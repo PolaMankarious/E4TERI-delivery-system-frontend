@@ -1,5 +1,5 @@
 import { Inject, Injectable, signal } from '@angular/core';
-import { iUser } from '../models/iUser'; // Make sure Role is imported
+import { iUser } from '../models/user'; // Make sure Role is imported
 import { Role } from '../models/role';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';

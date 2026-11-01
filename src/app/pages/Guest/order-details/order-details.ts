@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavBar } from '../../../shared/nav-bar/nav-bar';
+import { ActivatedRoute } from '@angular/router';
+import { inject } from '@angular/core';
 
 @Component({
   imports: [NavBar],
@@ -7,4 +9,7 @@ import { NavBar } from '../../../shared/nav-bar/nav-bar';
   styleUrl: './order-details.css',
   templateUrl: './order-details.html',
 })
-export class OrderDetails {}
+export class OrderDetails {
+  private route = inject(ActivatedRoute);
+  orderId = Number(this.route.snapshot.paramMap.get('id'));
+}

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NavBar } from '../../../shared/nav-bar/nav-bar';
 import { CourierService } from '../../../services/Orders/Courier/courier-service';
-import { iAssignedOrder } from '../../../models/iAssignedOrder';
+import { AssignedOrder } from '../../../models/assigned-order';
 
 @Component({
   imports: [NavBar],
@@ -12,7 +12,7 @@ import { iAssignedOrder } from '../../../models/iAssignedOrder';
 export class CourierOrders implements OnInit {
   private courierService = inject(CourierService);
 
-  assignedOrders = signal<iAssignedOrder[]>([]);
+  assignedOrders = signal<AssignedOrder[]>([]);
 
   ngOnInit(): void {
     this.loadAssignedOrders();

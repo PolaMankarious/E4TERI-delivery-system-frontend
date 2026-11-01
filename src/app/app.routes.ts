@@ -6,10 +6,13 @@ import { AdminOrders } from './pages/Admin/admin-orders/admin-orders';
 import { CourierOrders } from './pages/Courier/courier-orders/courier-orders';
 import { AddOrder } from './pages/Guest/add-order/add-order';
 import { Welcome } from './pages/welcome/welcome';
+import { MyOrders } from './pages/Guest/my-orders/my-orders';
+
 export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'order-details', component: OrderDetails },
+  { path: 'my-orders', component: MyOrders },
+  { path: 'order-details/:id', component: OrderDetails },
   { path: 'admin-orders', component: AdminOrders },
   { path: 'courier-orders', component: CourierOrders },
   { path: 'add-order', component: AddOrder },
