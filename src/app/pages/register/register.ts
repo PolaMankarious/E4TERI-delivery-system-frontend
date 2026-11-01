@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { iUser } from '../../models/user';
+import { RegisterRequest } from '../../models/auth';
 import { FormsModule } from '@angular/forms';
 import { Role } from '../../models/role';
 import { UserService } from '../../services/user';
@@ -19,7 +19,7 @@ export class Register {
   loading = false;
   errorMessage = '';
 
-  user: iUser = {
+  user: RegisterRequest = {
     name: '',
     email: '',
     password: '',
@@ -54,13 +54,11 @@ export class Register {
     this.userService.registerUser(this.user).subscribe({
       next: (res) => {
         console.log('after next stage');
-        this.userService.saveUserInfo(res);
-        console.log('Registering: ', this.user);
         this.router.navigate(['/login']);
       },
       error: (err: HttpErrorResponse) => {
         this.loading = false;
-        this.errorMessage = err.error?.message ?? 'Registeration failed';
+        this.errorMessage = err.error?.data?.message ?? 'Registration failed';
       },
       complete: () => {
         this.loading = false;
