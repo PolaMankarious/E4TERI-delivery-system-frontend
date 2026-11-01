@@ -1,9 +1,8 @@
-// user.model.ts
 import { Role } from './role';
 
-// a user as the app knows them (never includes the password)
+// what GET /user/me returns inside data (never includes the password)
 export interface User {
-  id: number;
+  user_id: number;
   name: string;
   email: string;
   phone_number: string;
