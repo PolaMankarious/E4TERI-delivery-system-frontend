@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { NavBar } from '../../../shared/nav-bar/nav-bar';
 import { iOrder } from '../../../models/order';
-import { AdminOrdersService } from '../../../services/Orders/admin-orders/admin-orders';
+import { AdminOrdersService } from '../../../services/Orders/admin-service/admin-service';
 import { CommonModule } from '@angular/common';
 @Component({
   imports: [NavBar, CommonModule],

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AdminOrdersService } from './admin-orders';
+import { AdminOrdersService } from './admin-service';
 
 describe('AdminOrders', () => {
   let service: AdminOrdersService;

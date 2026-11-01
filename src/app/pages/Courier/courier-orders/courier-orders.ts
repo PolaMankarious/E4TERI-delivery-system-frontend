@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NavBar } from '../../../shared/nav-bar/nav-bar';
-import { CourierService } from '../../../services/Orders/Courier/courier-service';
+import { CourierService } from '../../../services/Orders/courier-service/courier-service';
 import { AssignedOrder } from '../../../models/assigned-order';
 
 @Component({
