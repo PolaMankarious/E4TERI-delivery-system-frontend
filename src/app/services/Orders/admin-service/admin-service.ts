@@ -12,39 +12,38 @@ import { Order, OrderStatus } from '../../../models/order';
 })
 export class AdminOrdersService {
   private http = inject(HttpClient);
-  private url = `${API_URL}/order`;
+  private url = `${API_URL}/admin`;
 
   // Feature 9: every order in the system
-  getAllOrders(): Observable<Order[]> {
+  getAllOrders(): Observable<AdminOrder[]> {
     return this.http
-      .get<ApiResponse<{ orders: Order[] }>>(`${this.url}/admin`)
+      .get<ApiResponse<{ orders: AdminOrder[] }>>(this.url)
       .pipe(map((res) => res.data.orders));
   }
 
   // Feature 9: change the status of any order
   updateOrderStatus(id: number, order_status: OrderStatus) {
-    return this.http.patch<ApiResponse<{ order: Order }>>(`${this.url}/admin/${id}`, {
-      order_status,
-    });
+    return this.http.patch<ApiResponse<{ order: Order }>>(`${this.url}/${id}`, { order_status });
   }
+
 
   // Feature 9: delete any order
   deleteOrder(id: number) {
-    return this.http.delete<ApiResponse<unknown>>(`${this.url}/admin/${id}`);
+    return this.http.delete<ApiResponse<unknown>>(`${this.url}/${id}`);
   }
 
   // Feature 10: assign an order to a courier, or reassign it (reassigning resets acceptance)
   assignCourier(order_id: number, courier_id: number) {
-    return this.http.post<ApiResponse<{ order: Order; courier_id: number }>>(`${this.url}/courier`, {
-      order_id,
-      courier_id,
-    });
+    return this.http.post<ApiResponse<{ order: Order; courier_id: number }>>(
+      `${this.url}/assign-courier`,
+      { order_id, courier_id },
+    );
   }
 
   // Feature 10: the raw assignments of one courier
   getCourierAssignments(courierId: number): Observable<Assignment[]> {
     return this.http
-      .get<ApiResponse<{ assignments: Assignment[] }>>(`${this.url}/courier/${courierId}`)
+      .get<ApiResponse<{ assignments: Assignment[] }>>(`${this.url}/get-courier-assignments/${courierId}`)
       .pipe(map((res) => res.data.assignments));
   }
 
