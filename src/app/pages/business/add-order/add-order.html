@@ -1,0 +1,67 @@
+<main class="page">
+  <div class="page-header">
+    <h1 class="page-title">New <em>order</em></h1>
+    <p class="page-subtitle">Tell us where to pick up, where to deliver, and what is inside.</p>
+  </div>
+
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <h2 class="section-title">Route</h2>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="pickup">Pick up location</label>
+        <input id="pickup" class="input" type="text" formControlName="pickup_address" />
+        @if (showError('pickup_address')) { <span class="form-error">Pick up location is required.</span> }
+      </div>
+
+      <div class="form-field">
+        <label for="dropoff">Drop off location</label>
+        <input id="dropoff" class="input" type="text" formControlName="dropoff_address" />
+        @if (showError('dropoff_address')) { <span class="form-error">Drop off location is required.</span> }
+      </div>
+
+      <div class="form-field">
+        <label for="time">Delivery time</label>
+        <input id="time" class="input" type="datetime-local" formControlName="delivery_time" />
+        @if (showError('delivery_time')) { <span class="form-error">Choose a delivery time.</span> }
+      </div>
+    </div>
+
+    <h2 class="section-title">Package</h2>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="package">Package name</label>
+        <input id="package" class="input" type="text" formControlName="package_name" />
+        @if (showError('package_name')) { <span class="form-error">Package name is required.</span> }
+      </div>
+
+      <div class="form-field">
+        <label for="price">Price</label>
+        <input id="price" class="input" type="number" min="0" formControlName="price" />
+        @if (showError('price')) { <span class="form-error">Enter a price of 0 or more.</span> }
+      </div>
+
+      <div class="form-field">
+        <label for="customer">Customer name</label>
+        <input id="customer" class="input" type="text" formControlName="customer_name" />
+        @if (showError('customer_name')) { <span class="form-error">Customer name is required.</span> }
+      </div>
+
+      <div class="form-field">
+        <label for="phone">Customer phone</label>
+        <input id="phone" class="input" type="tel" formControlName="customer_number" />
+        @if (showError('customer_number')) { <span class="form-error">Customer phone is required.</span> }
+      </div>
+    </div>
+
+    @if (errorMessage()) {
+    <p class="form-error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <div class="form-actions">
+      <a class="button button-secondary" routerLink="/my-orders">Cancel</a>
+      <button class="button" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Adding…' : 'Add Order' }}
+      </button>
+    </div>
+  </form>
+</main>

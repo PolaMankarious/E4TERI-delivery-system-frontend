@@ -1,1 +1,4 @@
-<router-outlet></router-outlet>
+@if (userService.isLoggedIn()) {
+  <app-nav-bar />
+}
+<router-outlet />

@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { Register } from './pages/register/register';
 import { Login } from './pages/login/login';
-import { OrderDetails } from './pages/Guest/order-details/order-details';
-import { AdminOrders } from './pages/Admin/admin-orders/admin-orders';
-import { CourierOrders } from './pages/Courier/courier-orders/courier-orders';
-import { AddOrder } from './pages/Guest/add-order/add-order';
-import { MyOrders } from './pages/Guest/my-orders/my-orders';
+import { OrderDetails } from './pages/business/order-details/order-details';
+import { AdminOrders } from './pages/admin/admin-orders/admin-orders';
+import { CourierOrders } from './pages/courier/courier-orders/courier-orders';
+import { AddOrder } from './pages/business/add-order/add-order';
+import { MyOrders } from './pages/business/my-orders/my-orders';
 import { Welcome } from './pages/welcome/welcome';
 import { authGuard } from './services/guards/auth-guard';
 import { roleGuard } from './services/guards/role-guard';

@@ -2,22 +2,15 @@
   <div class="auth">
     <div class="auth-left">
       <form>
-        <label>Email</label><input type="email" [(ngModel)]="loginObj.email" name="email" /><label
-          >Password</label
-        ><input
-          type="password"
-          [(ngModel)]="loginObj.password"
-          #password="ngModel"
-          required
-          minlength="5"
-          name="password"
-        />
+        <label>Email</label><input type="email" [(ngModel)]="loginObj.email"
+          name="email" /><label>Password</label><input type="password" [(ngModel)]="loginObj.password"
+          #password="ngModel" required minlength="5" name="password" />
         <div class="text-danger">
           @if (password.errors?.['required'] && password.touched) {
-            <span>Password is required</span>
+          <span>Password is required</span>
           }
           @if (password.errors?.['minlength']) {
-            <span>Min 5 characters required</span>
+          <span>Min 5 characters required</span>
           }
         </div>
         <button type="button" (click)="onLogin()" class="btn">Login</button>

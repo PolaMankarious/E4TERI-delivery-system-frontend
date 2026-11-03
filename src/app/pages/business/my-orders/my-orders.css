@@ -1,0 +1,14 @@
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}

@@ -1,0 +1,63 @@
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">My <em>orders</em></h1>
+            <p class="page-subtitle">Track every delivery you have created.</p>
+        </div>
+        <a class="button" routerLink="/add-order">New Order</a>
+    </div>
+
+    @if (errorMessage()) {
+    <p class="form-error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+    <p class="empty-state">Loading your orders…</p>
+    } @else {
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Pick up</th>
+                    <th>Drop off</th>
+                    <th>Delivery time</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (order of orders(); track order.id) {
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.pickup_address }}</td>
+                    <td>{{ order.dropoff_address }}</td>
+                    <td>{{ order.delivery_time | date: 'd MMM y, h:mm a' }}</td>
+                    <td>
+                        <span class="badge" [class]="'badge badge-' + order.order_status">
+                            {{ statusLabels[order.order_status] }}
+                        </span>
+                    </td>
+                    <td class="actions">
+                        <a class="button button-secondary button-small"
+                            [routerLink]="['/order-details', order.id]">View</a>
+
+                        <!-- only pending orders can be cancelled -->
+                        @if (order.order_status === 'pending') {
+                        <button type="button" class="button button-danger button-small"
+                            [disabled]="cancellingId() === order.id" (click)="cancelOrder(order)">
+                            Cancel
+                        </button>
+                        }
+                    </td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="6" class="empty-state">You have no orders yet. Create your first one.</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+</main>

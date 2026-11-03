@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { NavBar } from '../../../shared/nav-bar/nav-bar';
-import { iOrder } from '../../../models/order';
+import { Order } from '../../../models/order';
 import { AdminOrdersService } from '../../../services/Orders/admin-service/admin-service';
 import { CommonModule } from '@angular/common';
 @Component({
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './admin-orders.html',
 })
 export class AdminOrders implements OnInit {
-  adminOrders = signal<iOrder[]>([]);
+  adminOrders = signal<Order[]>([]);
   constructor(private adminOrdersService: AdminOrdersService) { }
 
   ngOnInit(): void {
@@ -19,8 +19,8 @@ export class AdminOrders implements OnInit {
   loadAllOrders() {
     this.adminOrdersService.getAllOrders().subscribe(
       (res) => {
-        console.log(' got orders', res.data.orders);
-        this.adminOrders.set(res.data.orders);
+        console.log(' got orders', res);
+        this.adminOrders.set(res);
       },
       (err) => {
         console.log(' failed', err.status, err.error);
