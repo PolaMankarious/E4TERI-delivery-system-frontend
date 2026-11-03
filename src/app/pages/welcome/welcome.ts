@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
-import { NavBar } from '../../shared/nav-bar/nav-bar';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+import { UserService } from '../../services/user';
+import { Role } from '../../models/role';
 
 @Component({
-  imports: [NavBar],
   selector: 'app-welcome',
-  styleUrl: './welcome.css',
+  imports: [RouterLink],
   templateUrl: './welcome.html',
+  styleUrl: './welcome.css',
 })
-export class Welcome {}
+export class Welcome {
+  userService = inject(UserService);
+
+  readonly Role = Role;
+}

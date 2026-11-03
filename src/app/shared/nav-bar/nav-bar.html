@@ -1,7 +1,7 @@
 <header class="app-header">
   <div class="app-header-inner">
     <a class="brand-link" routerLink="/welcome" aria-label="Home">
-      <img src="logo.png" alt="Logo" />
+      <img src="images\delivery-svgrepo-com.svg" alt="Logo" />
     </a>
 
     <nav class="app-nav">
@@ -16,9 +16,10 @@
       }
       @case (Role.Admin) {
       <a routerLink="/admin-orders" routerLinkActive="active">Manage Orders</a>
+      <a routerLink="/assign-orders" routerLinkActive="active">Assign Orders</a>
       }
       }
-      <span class="user-name">{{ userService.currentUser().name }}</span>
+      <span class="user-name"><em>{{ userService.currentUser().name }}</em></span>
       <button type="button" class="button button-secondary button-small" (click)="logout()">
         Logout
       </button>

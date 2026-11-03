@@ -1,1 +1,135 @@
-<p>assign-orders works!</p>
+<main class="page">
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Assign <em>Orders</em></h1>
+            <p class="page-subtitle">Assign delivery orders to available couriers.</p>
+        </div>
+
+        <button class="button button-secondary" (click)="loadData()" [disabled]="loading()">
+            Refresh
+        </button>
+    </header>
+
+    <!-- Summary -->
+    <section class="assignment-summary">
+        <article class="card summary-card">
+            <span>Total Orders</span>
+            <strong>{{ orders().length }}</strong>
+        </article>
+
+        <article class="card summary-card">
+            <span>Assigned Orders</span>
+            <strong>{{ assignedCount }}</strong>
+        </article>
+
+        <article class="card summary-card">
+            <span>Available Couriers</span>
+            <strong>{{ couriers().length }}</strong>
+        </article>
+    </section>
+
+    @if (errorMessage()) {
+    <p class="feedback error-message">{{ errorMessage() }}</p>
+    }
+
+    @if (successMessage()) {
+    <p class="feedback success-message">{{ successMessage() }}</p>
+    }
+
+    @if (loading()) {
+    <p class="empty-state">Loading orders and couriers...</p>
+    } @else if (orders().length === 0) {
+    <section class="card empty-state">
+        <h2>No orders to assign</h2>
+        <p>New orders will appear here.</p>
+    </section>
+    } @else {
+    <section class="assignment-list">
+        @for (order of orders(); track order.id) {
+        <article class="card assignment-card">
+
+            <!-- Order heading -->
+            <div class="assignment-heading">
+                <div>
+                    <span class="detail-label">ORDER #{{ order.id }}</span>
+                    <h2>{{ order.Package.package_name }}</h2>
+                </div>
+
+                <span class="badge" [class.badge-pending]="order.order_status === 'pending'"
+                    [class.badge-picked_up]="order.order_status === 'picked_up'"
+                    [class.badge-in_transit]="order.order_status === 'in_transit'"
+                    [class.badge-delivered]="order.order_status === 'delivered'">
+                    {{ order.order_status.replace('_', ' ') }}
+                </span>
+            </div>
+
+            <!-- Order information -->
+            <div class="order-information">
+                <div>
+                    <span>Customer</span>
+                    <strong>{{ order.Package.customer_name }}</strong>
+                </div>
+
+                <div>
+                    <span>Phone Number</span>
+                    <strong>{{ order.Package.customer_number }}</strong>
+                </div>
+
+                <div>
+                    <span>Pickup Address</span>
+                    <strong>{{ order.pickup_address }}</strong>
+                </div>
+
+                <div>
+                    <span>Drop-off Address</span>
+                    <strong>{{ order.dropoff_address }}</strong>
+                </div>
+            </div>
+
+            <!-- Current courier -->
+            <div class="current-assignment">
+                <div>
+                    <span class="detail-label">CURRENT COURIER</span>
+
+                    @if (order.courier) {
+                    <strong>{{ order.courier.courier.name }}</strong>
+                    } @else {
+                    <strong class="unassigned">Not assigned</strong>
+                    }
+                </div>
+
+                @if (order.courier) {
+                <span class="assignment-status">
+                    {{ order.courier.accepted ? 'Accepted' : 'Awaiting response' }}
+                </span>
+                }
+            </div>
+
+            <!-- Assign courier -->
+            <div class="assignment-controls">
+                <div class="courier-select">
+                    <label [for]="'courier-' + order.id">Assign courier</label>
+
+                    <select [id]="'courier-' + order.id" class="input" [ngModel]="selectedCourierIds[order.id]"
+                        (ngModelChange)="setSelectedCourier(order.id, $event)" [name]="'courier-' + order.id">
+                        <option [ngValue]="null" disabled>Select a courier</option>
+
+                        @for (courier of couriers(); track courier.id) {
+                        <option [ngValue]="courier.id">
+                            {{ courier.name }} — {{ courier.phone_number }}
+                        </option>
+                        }
+                    </select>
+                </div>
+
+                <button class="button assign-button" (click)="assignCourier(order)"
+                    [disabled]="activeOrderId() === order.id || couriers().length === 0">
+                    {{ order.courier ? 'Reassign Courier' : 'Assign Courier' }}
+                </button>
+            </div>
+
+        </article>
+        }
+    </section>
+    }
+</main>

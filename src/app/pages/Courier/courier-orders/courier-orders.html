@@ -1,45 +1,114 @@
-<body>
-  <div class="wrap">
-    <app-nav-bar></app-nav-bar>
-    <div class="title">Assigned Orders</div>
-    <div class="panel">
-      <div class="panel-body">
-        <div class="th courier" style="margin-right: 290px">
-          <span>Pick up</span><span>Drop Off</span><span>Delivery Time</span><span>Status</span>
+<main class="page">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Assigned <em>Orders</em></h1>
+      <p class="page-subtitle">Manage your deliveries and update their progress.</p>
+    </div>
+
+    <button class="button button-secondary" (click)="loadOrders()" [disabled]="loading()">
+      Refresh
+    </button>
+  </header>
+
+  @if (errorMessage()) {
+  <p class="feedback error-message">{{ errorMessage() }}</p>
+  }
+
+  @if (loading()) {
+  <p class="empty-state">Loading your orders...</p>
+  } @else if (orders().length === 0) {
+  <section class="card empty-state">
+    <h2>No assigned orders yet</h2>
+    <p>New delivery assignments will appear here.</p>
+  </section>
+  } @else {
+  <section class="courier-order-list">
+    @for (order of orders(); track order.id) {
+    <article class="card courier-order">
+
+      <!-- Order heading -->
+      <div class="order-heading">
+        <div>
+          <span class="detail-label">ORDER #{{ order.id }}</span>
+          <h2>{{ order.Package.package_name }}</h2>
         </div>
-        @for (order of assignedOrders(); track order.id) {
-          <div class="line">
-            <div class="row courier" style="--cols: 1.2fr 1.2fr 1.6fr 1fr">
-              <span>Sheikh Zayed 1</span>
-              <span>Sheikh Zayed 7</span>
-              <span>15th Dec 12:02 PM</span>
-              <span>Picked Up</span>
-            </div>
-            <div class="act" style="min-width: 272px">
-              <a class="pill primary" href="#update">Update Order Status</a>
-            </div>
+
+        <span class="badge" [class.badge-pending]="order.order_status === 'pending'"
+          [class.badge-picked_up]="order.order_status === 'picked_up'"
+          [class.badge-in_transit]="order.order_status === 'in_transit'"
+          [class.badge-delivered]="order.order_status === 'delivered'">
+          {{ order.order_status.replace('_', ' ') }}
+        </span>
+      </div>
+
+      <!-- Package information -->
+      <div class="package-details">
+        <div>
+          <span>Customer</span>
+          <strong>{{ order.Package.customer_name }}</strong>
+        </div>
+
+        <div>
+          <span>Phone Number</span>
+          <strong>{{ order.Package.customer_number }}</strong>
+        </div>
+
+        <div>
+          <span>Delivery Time</span>
+          <strong>{{ order.delivery_time | date:'medium' }}</strong>
+        </div>
+      </div>
+
+      <!-- Delivery route -->
+      <div class="order-route">
+        <div class="route-item">
+          <span class="route-dot pickup"></span>
+          <div>
+            <span class="detail-label">PICKUP</span>
+            <p>{{ order.pickup_address }}</p>
           </div>
-        }
-        <div class="line">
-          <div class="row courier">
-            <span>Sheikh Zayed 1</span><span>Sheikh Zayed 7</span><span>15th Dec 12:02 PM</span
-            ><span>N/A</span>
-          </div>
-          <div class="act" style="min-width: 272px">
-            <a class="pill accept" href="#">Accept</a><a class="pill reject" href="#">Reject</a>
+        </div>
+
+        <div class="route-item">
+          <span class="route-dot dropoff"></span>
+          <div>
+            <span class="detail-label">DROP-OFF</span>
+            <p>{{ order.dropoff_address }}</p>
           </div>
         </div>
       </div>
-      <div class="pager">
-        <a href="#">Prev</a><span class="outline">1</span><a href="#">Next</a>
+
+      <!-- Actions -->
+      @if (!order.accepted) {
+      <div class="order-actions">
+        <span class="waiting-label">Waiting for your response</span>
+
+        <button class="button button-secondary" (click)="respond(order, false)"
+          [disabled]="activeOrderId() === order.id">
+          Decline
+        </button>
+
+        <button class="button" (click)="respond(order, true)" [disabled]="activeOrderId() === order.id">
+          Accept Order
+        </button>
       </div>
-    </div>
-  </div>
-  <div class="modal" id="update">
-    <div class="box">
-      <h2>Update Order Status</h2>
-      <label>Status</label><input type="text" />
-      <div class="center"><a class="pill primary" href="#">Update</a></div>
-    </div>
-  </div>
-</body>
+      } @else if (order.order_status !== 'delivered') {
+      <div class="order-actions">
+        <span class="accepted-label">✓ Order accepted</span>
+
+        <button class="button" (click)="updateStatus(order)" [disabled]="activeOrderId() === order.id">
+          {{ nextStatusLabel(order.order_status) }}
+        </button>
+      </div>
+      } @else {
+      <div class="order-actions">
+        <span class="accepted-label">✓ Delivery completed</span>
+        <span class="completed-message">This order has been delivered.</span>
+      </div>
+      }
+
+    </article>
+    }
+  </section>
+  }
+</main>

@@ -1,14 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
 import { UserService } from '../../services/user';
 
 @Component({
-  imports: [RouterModule, FormsModule],
   selector: 'app-login',
-  styleUrl: './login.css',
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
+  styleUrl: './login.css',
 })
 export class Login {
   private userService = inject(UserService);
@@ -22,7 +23,7 @@ export class Login {
     password: '',
   };
 
-  onLogin() {
+  onLogin(): void {
     if (this.loading) return;
 
     this.loading = true;
@@ -35,7 +36,10 @@ export class Login {
       },
       error: (err: HttpErrorResponse) => {
         this.loading = false;
-        this.errorMessage = err.error?.data?.message ?? 'Login failed.';
+        this.errorMessage =
+          err.error?.data?.message ??
+          err.error?.message ??
+          'Unable to log in. Please check your details and try again.';
       },
     });
   }

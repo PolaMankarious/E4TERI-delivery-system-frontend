@@ -1,62 +1,100 @@
-<div class="wrap">
-  <app-nav-bar></app-nav-bar>
-  <div class="title">Orders</div>
-  <div class="panel">
-    <div class="panel-body">
-      <div class="th admin" style="padding-right: 14px">
-        <span>Id</span>
-        <span>Pick up</span>
-        <span>Drop Off</span>
-        <span>Courier</span>
-        <span>Delivery Time</span>
-        <span>Status</span>
-        <span></span>
-      </div>
-      @for (order of adminOrders(); track order.id) {
-        <div class="line">
-          <div class="row admin cards-container" style="padding-right: 14px">
-            <span>{{ order.id }}</span>
-            <span>{{ order.pickup_address }}</span>
-            <span>{{ order.dropoff_address }}</span>
-            <span>Khaled</span>
-            <span>{{ order.delivery_time }}</span>
-            <span>{{ order.order_status }}</span>
-            <span class="icons">
-              <button href="#assign" title="Assign courier">&#8635;</button>
-              <button href="#edit" title="Edit">&#9998;</button>
-              <button (click)="OnDeleteOrder(order.id)" href="#delete" title="Delete">
-                &#128465;
-              </button>
-            </span>
-          </div>
-        </div>
-      } @empty {
-        <div class="line"><span>No orders found.</span></div>
-      }
+<main class="page">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">ADMIN WORKSPACE</span>
+      <h1 class="page-title">Manage <em>Orders</em></h1>
+      <p class="page-subtitle">Review orders and manage their delivery status.</p>
+    </div>
+
+    <button class="button button-secondary" (click)="loadOrders()" [disabled]="loading()">
+      Refresh
+    </button>
+  </header>
+
+  <div class="orders-summary">
+    <div class="card summary-card">
+      <span>Total orders</span>
+      <strong>{{ orders().length }}</strong>
+    </div>
+    <div class="card summary-card">
+      <span>Pending</span>
+      <strong>{{ orders().filter(o => o.order_status === 'pending').length }}</strong>
+    </div>
+    <div class="card summary-card">
+      <span>In progress</span>
+      <strong>{{ orders().filter(o => o.order_status === 'picked_up' || o.order_status === 'in_transit').length
+        }}</strong>
+    </div>
+    <div class="card summary-card">
+      <span>Delivered</span>
+      <strong>{{ orders().filter(o => o.order_status === 'delivered').length }}</strong>
     </div>
   </div>
-</div>
-<div class="modal" id="delete">
-  <div class="box">
-    <h2 style="font-size: 3.4rem; margin: 20px 0">Delete Order</h2>
-    <div class="btns">
-      <a class="pill danger" href="#">Delete</a><a class="pill primary" href="#">Back</a>
-    </div>
+
+  @if (errorMessage()) {
+  <div class="error-message" role="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+  <div class="card empty-state">Loading orders...</div>
+  } @else if (orders().length === 0) {
+  <div class="card empty-state">
+    <h2>No orders found</h2>
+    <p>Orders will appear here when businesses create them.</p>
   </div>
-</div>
-<div class="modal" id="edit">
-  <div class="box">
-    <h2>Edit Order</h2>
-    <label>Pick Off Location</label><input type="text" /><label>Drop Off Location</label
-    ><input type="text" /><label>Delivery Time</label><input type="text" /><label>Status</label
-    ><input type="text" />
-    <div class="center"><a class="pill primary" href="#">Edit</a></div>
+  } @else {
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Package</th>
+          <th>Business ID</th>
+          <th>Courier</th>
+          <th>Delivery time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (order of orders(); track order.id) {
+        <tr>
+          <td><strong>#{{ order.id }}</strong></td>
+          <td>
+            <strong>{{ order.Package?.package_name ?? 'No package' }}</strong>
+            <small>{{ order.Package?.customer_name }}</small>
+          </td>
+          <td>{{ order.business_id }}</td>
+          <td>
+            @if (order.courier?.courier) {
+            {{ order.courier?.courier?.name }}
+            } @else {
+            <span class="muted">Unassigned</span>
+            }
+          </td>
+          <td>{{ order.delivery_time | date: 'short' }}</td>
+          <td>
+            <select class="input status-select" [ngModel]="order.order_status"
+              (ngModelChange)="updateStatus(order, $event)" [disabled]="activeOrderId() !== null"
+              [name]="'status-' + order.id" [attr.aria-label]="'Status for order ' + order.id">
+              @for (status of statuses; track status) {
+              <option [ngValue]="status">
+                {{ statusLabels[status] }}
+              </option>
+              }
+            </select>
+          </td>
+          <td>
+            <button class="button button-danger button-small" [disabled]="activeOrderId() !== null"
+              (click)="deleteOrder(order)">
+              {{ activeOrderId() === order.id ? 'Please wait...' : 'Delete' }}
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
-</div>
-<div class="modal" id="assign">
-  <div class="box">
-    <h2>Assign Courier</h2>
-    <label>Courier</label><input type="text" />
-    <div class="center"><a class="pill primary" href="#">Assign</a></div>
-  </div>
-</div>
+  }
+</main>

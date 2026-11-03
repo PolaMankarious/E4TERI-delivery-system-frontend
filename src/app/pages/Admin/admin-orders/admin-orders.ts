@@ -1,47 +1,119 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { NavBar } from '../../../shared/nav-bar/nav-bar';
-import { Order } from '../../../models/order';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { AdminOrder } from '../../../models/admin-order';
+import { OrderStatus } from '../../../models/order';
 import { AdminOrdersService } from '../../../services/Orders/admin-service/admin-service';
-import { CommonModule } from '@angular/common';
+
 @Component({
-  imports: [NavBar, CommonModule],
   selector: 'app-admin-orders',
-  styleUrl: './admin-orders.css',
+  imports: [DatePipe, FormsModule],
   templateUrl: './admin-orders.html',
+  styleUrl: './admin-orders.css',
 })
 export class AdminOrders implements OnInit {
-  adminOrders = signal<Order[]>([]);
-  constructor(private adminOrdersService: AdminOrdersService) { }
+  private ordersService = inject(AdminOrdersService);
+
+  orders = signal<AdminOrder[]>([]);
+  loading = signal(true);
+  errorMessage = signal('');
+  activeOrderId = signal<number | null>(null);
+
+  readonly statuses: OrderStatus[] = [
+    'pending',
+    'picked_up',
+    'in_transit',
+    'delivered',
+  ];
+
+  readonly statusLabels: Record<OrderStatus, string> = {
+    pending: 'Pending',
+    picked_up: 'Picked Up',
+    in_transit: 'In Transit',
+    delivered: 'Delivered',
+  };
 
   ngOnInit(): void {
-    this.loadAllOrders();
-  }
-  loadAllOrders() {
-    this.adminOrdersService.getAllOrders().subscribe(
-      (res) => {
-        console.log(' got orders', res);
-        this.adminOrders.set(res);
-      },
-      (err) => {
-        console.log(' failed', err.status, err.error);
-      },
-    );
+    this.loadOrders();
   }
 
-  OnDeleteOrder(id: number) {
-    const confirmed = window.confirm('Are you sure you want to delete this order?');
+  loadOrders(): void {
+    this.loading.set(true);
+    this.errorMessage.set('');
 
-    if (!confirmed) {
+    this.ordersService.getAllOrders().subscribe({
+      next: (orders) => {
+
+        this.orders.set(orders);
+        this.loading.set(false);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.errorMessage.set(
+          err.error?.data?.message ?? 'Could not load orders.',
+        );
+        this.loading.set(false);
+      },
+    });
+  }
+
+  updateStatus(order: AdminOrder, status: string): void {
+    if (
+      !this.statuses.includes(status as OrderStatus) ||
+      order.order_status === status ||
+      this.activeOrderId() !== null
+    ) {
       return;
     }
 
-    this.adminOrdersService.deleteOrder(id).subscribe({
-      next: (res) => {
-        console.log('order deleted successfully', res);
-        this.loadAllOrders();
+    this.activeOrderId.set(order.id);
+    this.errorMessage.set('');
+
+    this.ordersService
+      .updateOrderStatus(order.id, status as OrderStatus)
+      .subscribe({
+        next: () => {
+          this.orders.update((orders) =>
+            orders.map((item) =>
+              item.id === order.id
+                ? { ...item, order_status: status as OrderStatus }
+                : item,
+            ),
+          );
+          this.activeOrderId.set(null);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.errorMessage.set(
+            err.error?.data?.message ?? 'Could not update order status.',
+          );
+          this.activeOrderId.set(null);
+        },
+      });
+  }
+
+  deleteOrder(order: AdminOrder): void {
+    if (this.activeOrderId() !== null) return;
+
+    if (!confirm(`Delete order #${order.id}? This cannot be undone.`)) {
+      return;
+    }
+
+    this.activeOrderId.set(order.id);
+    this.errorMessage.set('');
+
+    this.ordersService.deleteOrder(order.id).subscribe({
+      next: () => {
+        this.orders.update((orders) =>
+          orders.filter((item) => item.id !== order.id),
+        );
+        this.activeOrderId.set(null);
       },
-      error: (err) => {
-        console.log('Failed to delete order', err.error);
+      error: (err: HttpErrorResponse) => {
+        this.errorMessage.set(
+          err.error?.data?.message ?? 'Could not delete this order.',
+        );
+        this.activeOrderId.set(null);
       },
     });
   }

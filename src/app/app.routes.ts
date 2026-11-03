@@ -10,6 +10,7 @@ import { Welcome } from './pages/welcome/welcome';
 import { authGuard } from './services/guards/auth-guard';
 import { roleGuard } from './services/guards/role-guard';
 import { Role } from './models/role';
+import { AssignOrders } from './pages/admin/assign-orders/assign-orders';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -27,6 +28,6 @@ export const routes: Routes = [
 
   // admin
   { path: 'admin-orders', component: AdminOrders, canActivate: [authGuard, roleGuard], data: { roles: [Role.Admin] } },
-
+  { path: 'assign-orders', component: AssignOrders, canActivate: [authGuard, roleGuard], data: { roles: [Role.Admin] }, },
   { path: '**', redirectTo: 'login' },
 ];

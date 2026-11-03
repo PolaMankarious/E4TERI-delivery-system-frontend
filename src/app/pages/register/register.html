@@ -1,89 +1,178 @@
-<body>
-  <div class="auth">
-    <div class="auth-left">
-      <form action="">
+<div class="auth-page">
+  <section class="auth-panel">
+    <div class="auth-form-side">
+      <div class="mobile-brand">
+        <img src="images\delivery-svgrepo-com.svg" alt="E4TERI logo" />
+        <span>E4TERI</span>
+      </div>
+
+      <div class="form-content">
+        <div class="eyebrow">GET STARTED</div>
+
+        <div class="step-indicator">
+          <span [class.active]="step === 1">01</span>
+          <div [class.completed]="step === 2"></div>
+          <span [class.active]="step === 2">02</span>
+        </div>
+
         @if (step === 1) {
-          <label class="">Name</label
-          ><input
-            type="text"
-            #name="ngModel"
-            [(ngModel)]="user.name"
-            name="name"
-            required
-            minlength="5"
-            pattern="[A-Za-z ]+"
-            placeholder="Mohammed Ahmed"
-          />
-
-          @if (name.errors?.['required'] && name.dirty) {
-            <div class="text-danger"><span>Name is required</span></div>
-          }
-          @if ((name.errors?.['text'] || name.errors?.['pattern']) && email.dirty) {
-            <div class="text-danger"><span>Enter a valid name</span></div>
-          }
-
-          <label>Email</label>
-          <input
-            type="email"
-            #email="ngModel"
-            [(ngModel)]="user.email"
-            name="email"
-            required
-            pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
-            placeholder="moahmed999@gmail.com"
-          />
-          @if (email.errors?.['required'] && email.dirty) {
-            <div class="text-danger"><span>Email is required</span></div>
-          }
-          @if ((email.errors?.['email'] || email.errors?.['pattern']) && email.dirty) {
-            <div class="text-danger"><span>Enter a valid email address</span></div>
-          }
-
-          <label>Phone Number</label
-          ><input
-            type="text"
-            [(ngModel)]="user.phone_number"
-            name="phone"
-            placeholder="+2XXXXXXXXXXX"
-          />
-          <button class="btn" type="button" (click)="goToStep2()">Next</button>
+        <h1>Create your <em>account.</em></h1>
+        <p class="form-subtitle">
+          First, tell us a little about yourself.
+        </p>
+        } @else {
+        <h1>Secure your <em>account.</em></h1>
+        <p class="form-subtitle">
+          Choose a password to finish setting up your account.
+        </p>
         }
 
-        @if (step === 2) {
-          <label class="">Password</label
-          ><input
-            type="password"
-            #password="ngModel"
-            [(ngModel)]="user.password"
-            name="password"
-            required=""
-          />
-          @if (password.errors?.['required'] && password.touched) {
-            <div class="text-danger"><span>Password is required</span></div>
-          }
-          @if (password.errors?.['minlength'] && password.touched) {
-            <div class="text-danger"><span>Min 6 characters required</span></div>
-          }
-          <label class="">Confirm Password</label>
-          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+        <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+          @if (step === 1) {
+          <div class="form-field">
+            <label for="name">Full name</label>
+            <input id="name" class="input" type="text" name="name" [(ngModel)]="user.name" #name="ngModel"
+              placeholder="Your full name" autocomplete="name" required minlength="2" pattern="[A-Za-zÀ-ÿ ]+" />
 
-          @if (confirmPassword && confirmPassword !== user.password) {
-            <div class="text-danger"><span>Passwords do not match</span></div>
+            @if (name.invalid && name.touched) {
+            <span class="field-error">
+              @if (name.errors?.['required']) {
+              Name is required.
+              } @else if (name.errors?.['minlength']) {
+              Name must contain at least 2 characters.
+              } @else {
+              Use letters and spaces only.
+              }
+            </span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email address</label>
+            <input id="email" class="input" type="email" name="email" [(ngModel)]="user.email" #email="ngModel"
+              placeholder="you@example.com" autocomplete="email" required email />
+
+            @if (email.invalid && email.touched) {
+            <span class="field-error">
+              Enter a valid email address.
+            </span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="phone">Phone number</label>
+            <input id="phone" class="input" type="tel" name="phone_number" [(ngModel)]="user.phone_number"
+              #phone="ngModel" placeholder="Your phone number" autocomplete="tel" required pattern="[0-9+() -]{7,20}" />
+
+            @if (phone.invalid && phone.touched) {
+            <span class="field-error">
+              Enter a valid phone number.
+            </span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="role">Account type</label>
+            <select id="role" class="input" name="role" [(ngModel)]="user.role" required>
+              <option [ngValue]="Role.Business">Business</option>
+              <option [ngValue]="Role.Courier">Courier</option>
+            </select>
+          </div>
+
+          <button class="button auth-submit" type="button" [disabled]="registerForm.invalid"
+            (click)="goToStep2(registerForm)">
+            Continue <span aria-hidden="true">→</span>
+          </button>
+          } @else {
+          <div class="form-field">
+            <label for="password">Password</label>
+            <input id="password" class="input" type="password" name="password" [(ngModel)]="user.password"
+              #password="ngModel" placeholder="Create a password" autocomplete="new-password" required minlength="8" />
+
+            @if (password.invalid && password.touched) {
+            <span class="field-error">
+              @if (password.errors?.['required']) {
+              Password is required.
+              } @else {
+              Password must be at least 8 characters.
+              }
+            </span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="confirmPassword">Confirm password</label>
+            <input id="confirmPassword" class="input" type="password" name="confirmPassword"
+              [(ngModel)]="confirmPassword" #confirm="ngModel" placeholder="Enter your password again"
+              autocomplete="new-password" required />
+
+            @if (confirm.touched && !passwordMatched()) {
+            <span class="field-error">
+              Passwords do not match.
+            </span>
+            }
+          </div>
+
+          @if (errorMessage) {
+          <div class="error-message" role="alert">
+            {{ errorMessage }}
+          </div>
           }
-          <div class="button-row">
-            <button type="button" class="btn btn-back" (click)="goToStep1()">Back</button>
-            <button class="btn btn-register" (click)="onRegister()" [disabled]="!passwordMatched()">
-              Register
+
+          <div class="form-actions">
+            <button class="button button-secondary back-button" type="button" [disabled]="loading"
+              (click)="goToStep1()">
+              Back
+            </button>
+
+            <button class="button auth-submit" type="submit"
+              [disabled]="loading || registerForm.invalid || !passwordMatched()">
+              @if (loading) {
+              <span class="spinner"></span>
+              Creating...
+              } @else {
+              Create Account <span aria-hidden="true">→</span>
+              }
             </button>
           </div>
-        }
-      </form>
-      <p class="">Already got an account?<br /><a routerLink="/login">Click here to login.</a></p>
+          }
+        </form>
+
+        <p class="switch-auth">
+          Already have an account?
+          <a routerLink="/login">Sign in</a>
+        </p>
+      </div>
+
+      <p class="auth-footer">© 2026 E4TERI. All rights reserved.</p>
     </div>
-    <div class="auth-right">
-      <img src="logo.svg" alt="E4TERI logo" />
-      <div class="brand">E4TERI</div>
-      <div class="slogan">Fastest Order Delivery<br />In the<br />Middle East</div>
-    </div>
-  </div>
-</body>
+
+    <aside class="auth-visual">
+      <div class="visual-brand">
+        <img src="images\delivery-svgrepo-com.svg" alt="" />
+        <span>E4TERI</span>
+      </div>
+
+      <div class="visual-content">
+        <span class="visual-label">YOUR DELIVERY PARTNER</span>
+        <h2>Good things<br />are on their <em>way.</em></h2>
+        <p>
+          Join E4TERI and make delivery management simpler, clearer,
+          and more organized.
+        </p>
+
+        <div class="visual-card">
+          <div class="visual-card-icon">✦</div>
+          <div>
+            <strong>One account. Less hassle.</strong>
+            <span>Everything you need in one place.</span>
+          </div>
+          <span class="visual-check">✓</span>
+        </div>
+      </div>
+
+      <div class="visual-decoration decoration-one"></div>
+      <div class="visual-decoration decoration-two"></div>
+    </aside>
+  </section>
+</div>

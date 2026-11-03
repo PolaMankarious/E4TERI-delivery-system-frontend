@@ -1,19 +1,23 @@
 import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+
 import { RegisterRequest } from '../../models/auth';
-import { FormsModule } from '@angular/forms';
 import { Role } from '../../models/role';
 import { UserService } from '../../services/user';
-import { HttpErrorResponse } from '@angular/common/http';
+
 @Component({
-  imports: [RouterLink, FormsModule],
   selector: 'app-register',
-  styleUrl: './register.css',
+  imports: [FormsModule, RouterLink],
   templateUrl: './register.html',
+  styleUrl: './register.css',
 })
 export class Register {
   private router = inject(Router);
   private userService = inject(UserService);
+
+  readonly Role = Role;
 
   step: 1 | 2 = 1;
   loading = false;
@@ -22,46 +26,57 @@ export class Register {
   user: RegisterRequest = {
     name: '',
     email: '',
-    password: '',
     phone_number: '',
-    role: Role.Courier,
+    password: '',
+    role: Role.Business,
   };
+
   confirmPassword = '';
 
-  passwordMatched(): boolean {
-    return !!this.user.password && this.user.password === this.confirmPassword;
-  }
+  goToStep2(form: NgForm): void {
+    form.form.markAllAsTouched();
 
-  goToStep2() {
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.user.email);
-    if (!this.user.name || !emailValid || !this.user.phone_number) {
-      return;
-    }
-    console.log('go to step2');
+    if (form.invalid) return;
+
+    this.errorMessage = '';
     this.step = 2;
   }
 
-  goToStep1() {
+  goToStep1(): void {
+    this.errorMessage = '';
     this.step = 1;
   }
 
-  onRegister() {
-    if (!this.passwordMatched()) return;
-    console.log('registering');
+  passwordMatched(): boolean {
+    return (
+      this.user.password.length > 0 &&
+      this.user.password === this.confirmPassword
+    );
+  }
+
+  onRegister(form: NgForm): void {
+    form.form.markAllAsTouched();
+
+    if (this.loading || form.invalid || !this.passwordMatched()) {
+      return;
+    }
+
     this.loading = true;
     this.errorMessage = '';
-    //api here
+
     this.userService.registerUser(this.user).subscribe({
-      next: (res) => {
-        console.log('after next stage');
-        this.router.navigate(['/login']);
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/login'], {
+          queryParams: { registered: 'true' },
+        });
       },
       error: (err: HttpErrorResponse) => {
         this.loading = false;
-        this.errorMessage = err.error?.data?.message ?? 'Registration failed';
-      },
-      complete: () => {
-        this.loading = false;
+        this.errorMessage =
+          err.error?.data?.message ??
+          err.error?.message ??
+          'Registration failed. Please try again.';
       },
     });
   }

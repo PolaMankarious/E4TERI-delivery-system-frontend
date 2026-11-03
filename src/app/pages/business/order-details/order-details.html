@@ -1,48 +1,192 @@
-<app-nav-bar></app-nav-bar>
-<body>
-  <div class="wrap">
-    <app-nav-bar></app-nav-bar>
-    <div class="title">Order Details</div>
-    <div class="panel">
-      <div class="form">
+<main class="page order-details-page">
+  <a class="back-link" routerLink="/my-orders">
+    <span>←</span> Back to My Orders
+  </a>
+
+  @if (loading()) {
+  <div class="card loading-card">
+    <div class="loading-spinner"></div>
+    <p>Loading order details...</p>
+  </div>
+  } @else if (errorMessage() && !details()) {
+  <div class="card error-state">
+    <div class="state-icon">!</div>
+    <h2>Couldn't load this order</h2>
+    <p>{{ errorMessage() }}</p>
+    <a class="button button-secondary" routerLink="/my-orders">
+      Back to My Orders
+    </a>
+  </div>
+  } @else if (details(); as data) {
+  <header class="details-header">
+    <div>
+      <span class="eyebrow">ORDER OVERVIEW</span>
+      <h1 class="page-title">Order <em>#{{ data.order.id }}</em></h1>
+      <p class="page-subtitle">
+        Created {{ data.order.createdAt | date: 'medium' }}
+      </p>
+    </div>
+
+    <span class="badge" [class]="'badge badge-' + data.order.order_status">
+      {{ statusLabels[data.order.order_status] }}
+    </span>
+  </header>
+
+  @if (errorMessage()) {
+  <div class="error-message" role="alert">
+    {{ errorMessage() }}
+  </div>
+  }
+
+  <section class="card progress-card">
+    <div class="section-title">
+      <div>
+        <span class="eyebrow">DELIVERY PROGRESS</span>
+        <h2>Track your order</h2>
+      </div>
+      <span class="progress-count">
+        {{ getStatusIndex(data.order.order_status) + 1 }} / 4
+      </span>
+    </div>
+
+    <div class="progress-track">
+      @for (step of statusSteps; track step; let i = $index) {
+      <div class="progress-step" [class.completed]="i <= getStatusIndex(data.order.order_status)"
+        [class.current]="i === getStatusIndex(data.order.order_status)">
+        <div class="step-dot">
+          @if (i < getStatusIndex(data.order.order_status)) { ✓ } @else { {{ i + 1 }} } </div>
+            <span>{{ statusLabels[step] }}</span>
+        </div>
+        }
+      </div>
+
+      <div class="delivery-time">
+        <span>Scheduled delivery</span>
+        <strong>{{ data.order.delivery_time | date: 'medium' }}</strong>
+      </div>
+  </section>
+
+  <div class="details-grid">
+    <section class="card">
+      <div class="section-title">
         <div>
-          <div class="field">
-            <label>Pick Off Location</label>
-            <p></p>
-          </div>
-          <div class="field">
-            <label>Drop Off Location</label>
-            <p></p>
-          </div>
-          <div class="field">
-            <label>Package Details</label>
-            <p></p>
-          </div>
-          <div class="field">
-            <label>Delivery Time</label>
-            <p></p>
+          <span class="eyebrow">ROUTE</span>
+          <h2>Delivery information</h2>
+        </div>
+        <span class="section-icon">↗</span>
+      </div>
+
+      <div class="route-list">
+        <div class="route-point">
+          <span class="route-marker pickup"></span>
+          <div>
+            <span class="detail-label">PICKUP LOCATION</span>
+            <p>{{ data.order.pickup_address }}</p>
           </div>
         </div>
-        <div>
-          <div class="field">
-            <label>Courier Name</label>
-            <p></p>
-          </div>
-          <div class="field">
-            <label>Courier Email</label>
-            <p></p>
-          </div>
-          <div class="field">
-            <label>Courier Phone No.</label>
-            <p></p>
-          </div>
-          <div class="center" style="display: flex; justify-content: center; margin-top: 30px">
-            <a class="pill cancel" style="border: 2px solid #000" href="user-orders.html"
-              >Cancel Order</a
-            >
+
+        <div class="route-line"></div>
+
+        <div class="route-point">
+          <span class="route-marker dropoff"></span>
+          <div>
+            <span class="detail-label">DROP-OFF LOCATION</span>
+            <p>{{ data.order.dropoff_address }}</p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">PACKAGE</span>
+          <h2>Package details</h2>
+        </div>
+        <span class="section-icon">#</span>
+      </div>
+
+      <div class="package-name">
+        {{ data.package.package_name }}
+      </div>
+
+      <div class="info-row">
+        <span>Customer name</span>
+        <strong>{{ data.package.customer_name }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Customer phone</span>
+        <strong>{{ data.package.customer_number }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Package price</span>
+        <strong>{{ data.package.price | number: '1.2-2' }}</strong>
+      </div>
+    </section>
+
+    <section class="card courier-card">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">DELIVERY PARTNER</span>
+          <h2>Courier information</h2>
+        </div>
+        <span class="section-icon">♙</span>
+      </div>
+
+      @if (data.courier) {
+      <div class="courier-profile">
+        <div class="courier-avatar">
+          {{ data.courier.courier.name.charAt(0).toUpperCase() }}
+        </div>
+        <div>
+          <strong>{{ data.courier.courier.name }}</strong>
+          <span>
+            {{ data.courier.accepted ? 'Assignment accepted' : 'Awaiting response' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span>Phone number</span>
+        <strong>{{ data.courier.courier.phone_number }}</strong>
+      </div>
+      } @else {
+      <div class="courier-empty">
+        <span class="empty-icon">⌛</span>
+        <strong>No courier assigned yet</strong>
+        <p>Your order is waiting for a courier assignment.</p>
+      </div>
+      }
+    </section>
+
+    <section class="card order-summary">
+      <span class="eyebrow">ORDER SUMMARY</span>
+      <h2>Order information</h2>
+
+      <div class="info-row">
+        <span>Order number</span>
+        <strong>#{{ data.order.id }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Created on</span>
+        <strong>{{ data.order.createdAt | date: 'mediumDate' }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Last updated</span>
+        <strong>{{ data.order.updatedAt | date: 'mediumDate' }}</strong>
+      </div>
+
+      @if (data.order.order_status === 'pending') {
+      <button class="button button-danger cancel-button" type="button" [disabled]="cancelling()"
+        (click)="cancelOrder()">
+        {{ cancelling() ? 'Cancelling...' : 'Cancel Order' }}
+      </button>
+      }
+    </section>
   </div>
-</body>
+  }
+</main>

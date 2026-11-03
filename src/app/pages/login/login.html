@@ -1,28 +1,96 @@
-<body>
-  <div class="auth">
-    <div class="auth-left">
-      <form>
-        <label>Email</label><input type="email" [(ngModel)]="loginObj.email"
-          name="email" /><label>Password</label><input type="password" [(ngModel)]="loginObj.password"
-          #password="ngModel" required minlength="5" name="password" />
-        <div class="text-danger">
-          @if (password.errors?.['required'] && password.touched) {
-          <span>Password is required</span>
+<div class="auth-page">
+  <section class="auth-panel">
+    <div class="auth-form-side">
+      <div class="mobile-brand">
+        <img src="/images/delivery-svgrepo-com.svg" alt="E4TERI logo">
+        <span>E4ATERI</span>
+      </div>
+
+      <div class="form-content">
+        <div class="eyebrow">WELCOME BACK</div>
+        <h1>Let's get you <em>moving.</em></h1>
+        <p class="form-subtitle">
+          Sign in to manage your deliveries and orders.
+        </p>
+
+        <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+          <div class="form-field">
+            <label for="email">Email address</label>
+            <input id="email" class="input" type="email" name="email" [(ngModel)]="loginObj.email" #email="ngModel"
+              placeholder="you@example.com" autocomplete="email" required email />
+
+            @if (email.invalid && email.touched) {
+            <span class="field-error">
+              @if (email.errors?.['required']) {
+              Email is required.
+              } @else {
+              Enter a valid email address.
+              }
+            </span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="password">Password</label>
+            <input id="password" class="input" type="password" name="password" [(ngModel)]="loginObj.password"
+              #password="ngModel" placeholder="Enter your password" autocomplete="current-password" required />
+
+            @if (password.invalid && password.touched) {
+            <span class="field-error">Password is required.</span>
+            }
+          </div>
+
+          @if (errorMessage) {
+          <div class="error-message" role="alert">
+            {{ errorMessage }}
+          </div>
           }
-          @if (password.errors?.['minlength']) {
-          <span>Min 5 characters required</span>
-          }
+
+          <button class="button auth-submit" type="submit" [disabled]="loading || loginForm.invalid">
+            @if (loading) {
+            <span class="spinner"></span>
+            Signing in...
+            } @else {
+            Sign In <span aria-hidden="true">→</span>
+            }
+          </button>
+        </form>
+
+        <p class="switch-auth">
+          Don't have an account?
+          <a routerLink="/register">Create one</a>
+        </p>
+      </div>
+
+      <p class="auth-footer">© 2026 E4TERI. All rights reserved.</p>
+    </div>
+
+    <aside class="auth-visual">
+      <div class="visual-brand">
+        <img src="images\delivery-svgrepo-com.svg" alt="" />
+        <h2>E4TERI</h2>
+      </div>
+
+      <div class="visual-content">
+        <span class="visual-label">DELIVERY, SIMPLIFIED.</span>
+        <h2>Every delivery.<br />Right on <em>time.</em></h2>
+        <p>
+          One place to create, manage, and track deliveries from pickup
+          to destination.
+        </p>
+
+        <div class="visual-card">
+          <div class="visual-card-icon">↗</div>
+          <div>
+            <strong>Keep things moving.</strong>
+            <span>Stay on top of every order.</span>
+          </div>
+          <span class="visual-check">✓</span>
         </div>
-        <button type="button" (click)="onLogin()" class="btn">Login</button>
-      </form>
-      <p>
-        Not Registered?<br /><a class="click-here" routerLink="/register">Click here to Sign Up</a>
-      </p>
-    </div>
-    <div class="auth-right">
-      <img src="logo.svg" alt="E4TERI logo" />
-      <div class="brand">E4TERI</div>
-      <div class="slogan">Fastest Order Delivery<br />In the<br />Middle East</div>
-    </div>
-  </div>
-</body>
+      </div>
+
+      <div class="visual-decoration decoration-one"></div>
+      <div class="visual-decoration decoration-two"></div>
+    </aside>
+  </section>
+</div>

@@ -1,4 +1,4 @@
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { API_URL } from '../../../config/api.config';
@@ -6,7 +6,9 @@ import { ApiResponse } from '../../../models/api-response';
 import { AssignedOrder } from '../../../models/assigned-order';
 import { Order, OrderStatus } from '../../../models/order';
 
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class CourierService {
   private http = inject(HttpClient);
   private url = `${API_URL}/order`;

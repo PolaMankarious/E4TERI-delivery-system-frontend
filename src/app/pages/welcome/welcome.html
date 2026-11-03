@@ -1,9 +1,103 @@
-<div class="wrap">
-  <app-nav-bar></app-nav-bar>
-  <p>welcome works!</p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Id earum eum commodi cupiditate magnam
-    necessitatibus perspiciatis odit minima reiciendis, pariatur doloremque perferendis nihil
-    aliquam molestiae, vel facilis nobis itaque. Esse.
-  </p>
-</div>
+<main class="page welcome-page">
+  <section class="welcome-hero">
+    <div class="welcome-copy">
+      <span class="eyebrow">E4ATERI DELIVERY PLATFORM</span>
+
+      <h1>
+        Welcome back,<br />
+        <em>{{ userService.currentUser().name }}</em>
+      </h1>
+
+      @switch (userService.currentUser().role) {
+      @case (Role.Business) {
+      <p>
+        Manage your deliveries, create new orders, and keep track
+        of everything in one place.
+      </p>
+      }
+      @case (Role.Courier) {
+      <p>
+        Your assigned deliveries are waiting. Review orders,
+        respond to assignments, and update delivery progress.
+      </p>
+      }
+      @case (Role.Admin) {
+      <p>
+        Manage platform orders and courier assignments from
+        your administration workspace.
+      </p>
+      }
+      @default {
+      <p>Welcome to E4ATERI.</p>
+      }
+      }
+    </div>
+
+    <div class="welcome-art" aria-hidden="true">
+      <div class="art-circle circle-one"></div>
+      <div class="art-circle circle-two"></div>
+      <div class="delivery-box">↗</div>
+      <span class="art-spark spark-one">✦</span>
+      <span class="art-spark spark-two">✦</span>
+    </div>
+  </section>
+
+  <section class="dashboard-section">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">YOUR WORKSPACE</span>
+        <h2>Where would you like to go?</h2>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      @switch (userService.currentUser().role) {
+      @case (Role.Business) {
+      <a class="dashboard-card card-peach" routerLink="/add-order">
+        <span class="card-icon">＋</span>
+        <span class="card-kicker">CREATE</span>
+        <h3>New Order</h3>
+        <p>Create a delivery request with pickup and package details.</p>
+        <span class="card-link">Create an order <span>→</span></span>
+      </a>
+
+      <a class="dashboard-card card-mint" routerLink="/my-orders">
+        <span class="card-icon">▤</span>
+        <span class="card-kicker">TRACK</span>
+        <h3>My Orders</h3>
+        <p>View your orders, check their status, and manage pending ones.</p>
+        <span class="card-link">View my orders <span>→</span></span>
+      </a>
+      }
+
+      @case (Role.Courier) {
+      <a class="dashboard-card card-blue" routerLink="/courier-orders">
+        <span class="card-icon">↗</span>
+        <span class="card-kicker">DELIVER</span>
+        <h3>Assigned Orders</h3>
+        <p>Review your assignments and update delivery progress.</p>
+        <span class="card-link">View assignments <span>→</span></span>
+      </a>
+      }
+
+      @case (Role.Admin) {
+      <a class="dashboard-card card-peach" routerLink="/admin-orders">
+        <span class="card-icon">▤</span>
+        <span class="card-kicker">OVERVIEW</span>
+        <h3>Manage Orders</h3>
+        <p>Review all orders and manage their delivery statuses.</p>
+        <span class="card-link">Manage orders <span>→</span></span>
+      </a>
+
+      <a class="dashboard-card card-lilac" routerLink="/assign-orders">
+        <span class="card-icon">⇄</span>
+        <span class="card-kicker">COORDINATE</span>
+        <h3>Assign Orders</h3>
+        <p>Assign orders to couriers and manage existing assignments.</p>
+        <span class="card-link">Manage assignments <span>→</span></span>
+      </a>
+      }
+      }
+    </div>
+  </section>
+</main>

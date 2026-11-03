@@ -52,6 +52,13 @@
     color: var(--color-muted);
 }
 
+em {
+    color: var(--color-accent);
+    font-family: var(--font-hand);
+    font-size: 40px;
+    font-weight: 400;
+}
+
 @media (max-width: 700px) {
     .user-name {
         display: none;
