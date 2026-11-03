@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { API_URL } from '../../../config/api.config';
 import { ApiResponse } from '../../../models/api-response';
 import { Assignment } from '../../../models/assignment';
+import { AdminOrder, Courier } from '../../../models/admin-order';
 import { Order, OrderStatus } from '../../../models/order';
 
 @Injectable({
@@ -45,5 +46,12 @@ export class AdminOrdersService {
     return this.http
       .get<ApiResponse<{ assignments: Assignment[] }>>(`${this.url}/courier/${courierId}`)
       .pipe(map((res) => res.data.assignments));
+  }
+
+  // Feature 10: couriers for the assign dropdown
+  getCouriers(): Observable<Courier[]> {
+    return this.http
+      .get<ApiResponse<{ couriers: Courier[] }>>(`${this.url}/get-couriers`)
+      .pipe(map((res) => res.data.couriers));
   }
 }
